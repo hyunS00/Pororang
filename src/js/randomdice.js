@@ -41,15 +41,29 @@ function setChampion(randomChampion, $pickImages, $pickNames) {
     for (let i = 5; i < 10; i++) {
         $pickNames[i].innerText = randomChampion[i + 5].id;
     }
+    console.log(randomChampion);
 }
 
-function clickBtn(championData, $pickImages, $pickNames) {
-    const newChampionData = [...championData];
-    const randomChampion = shuffle(newChampionData);
-    setChampion(randomChampion, $pickImages, $pickNames);
+function clickBtn(championData, $pickImages, $pickNames, isFirst) {
+    let result = true;
+    if (isFirst.bool) {
+        isFirst.bool = false;
+    } else {
+        result = window.confirm('챔피언 데이터가 사라집니다 계속 하시겠습니까?');
+    }
+    if (result) {
+        const newChampionData = [...championData];
+        const randomChampion = shuffle(newChampionData);
+        setChampion(randomChampion, $pickImages, $pickNames);
+    }
 }
 
 async function main() {
+    const $backgound = document.querySelector('.backgound');
+    $backgound.style.backgroundImage = `url('./src/img/T1.png')`;
+    $backgound.style.backgroundRepeat = 'no-repeat';
+    $backgound.style.backgroundSize = 'contain';
+
     let championData = [];
 
     const $pickImages = [];
@@ -58,8 +72,10 @@ async function main() {
     const $version = document.querySelector('.patch-version');
 
     const $reBtn = document.querySelector('.reBtn');
-
-    $reBtn.addEventListener('click', () => clickBtn(championData, $pickImages, $pickNames));
+    const isFirst = { bool: 1 };
+    $reBtn.addEventListener('click', () =>
+        clickBtn(championData, $pickImages, $pickNames, isFirst)
+    );
     for (let i = 0; i < 20; i++) {
         $pickImages.push(document.querySelector(`.pick${i + 1}-img`));
     }
@@ -73,7 +89,6 @@ async function main() {
 
     try {
         championData = await getChampion($version);
-        clickBtn(championData, $pickImages, $pickNames);
     } catch (error) {
         console.error('Error in main function:', error);
     }
