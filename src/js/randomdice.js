@@ -29,11 +29,11 @@ async function getChampion($version) {
     }
 }
 
-function setChampion(randomChampion, $pickImages, $pickNames, version) {
+function setChampion(randomChampion, $pickImages, $pickNames) {
     for (let i in $pickImages) {
         $pickImages[
             i
-        ].style.backgroundImage = `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${randomChampion[i].id}.png')`;
+        ].style.backgroundImage = `url('https://ddragon.leagueoflegends.com/cdn/${randomChampion[i].version}/img/champion/${randomChampion[i].id}.png')`;
     }
     for (let i = 0; i < 5; i++) {
         $pickNames[i].innerText = randomChampion[i].id;
@@ -44,7 +44,7 @@ function setChampion(randomChampion, $pickImages, $pickNames, version) {
     console.log(randomChampion);
 }
 
-function clickBtn(championData, $pickImages, $pickNames, version, isFirst) {
+function clickBtn(championData, $pickImages, $pickNames, isFirst) {
     let result = true;
     if (isFirst.bool) {
         isFirst.bool = false;
@@ -54,7 +54,7 @@ function clickBtn(championData, $pickImages, $pickNames, version, isFirst) {
     if (result) {
         const newChampionData = [...championData];
         const randomChampion = shuffle(newChampionData);
-        setChampion(randomChampion, $pickImages, $pickNames, version);
+        setChampion(randomChampion, $pickImages, $pickNames);
     }
 }
 
@@ -75,7 +75,7 @@ async function main() {
     const isFirst = { bool: 1 };
 
     $reBtn.addEventListener('click', () =>
-        clickBtn(championData, $pickImages, $pickNames, $version.innerText, isFirst)
+        clickBtn(championData, $pickImages, $pickNames, isFirst)
     );
     for (let i = 0; i < 20; i++) {
         $pickImages.push(document.querySelector(`.pick${i + 1}-img`));
