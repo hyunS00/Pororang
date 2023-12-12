@@ -29,11 +29,11 @@ async function getChampion($version) {
     }
 }
 
-function setChampion(randomChampion, $pickImages, $pickNames) {
+function setChampion(randomChampion, $pickImages, $pickNames, version) {
     for (let i in $pickImages) {
         $pickImages[
             i
-        ].style.backgroundImage = `url('https://ddragon.leagueoflegends.com/cdn/13.22.1/img/champion/${randomChampion[i].id}.png')`;
+        ].style.backgroundImage = `url('https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${randomChampion[i].id}.png')`;
     }
     for (let i = 0; i < 5; i++) {
         $pickNames[i].innerText = randomChampion[i].id;
@@ -44,7 +44,7 @@ function setChampion(randomChampion, $pickImages, $pickNames) {
     console.log(randomChampion);
 }
 
-function clickBtn(championData, $pickImages, $pickNames, isFirst) {
+function clickBtn(championData, $pickImages, $pickNames, version, isFirst) {
     let result = true;
     if (isFirst.bool) {
         isFirst.bool = false;
@@ -54,7 +54,7 @@ function clickBtn(championData, $pickImages, $pickNames, isFirst) {
     if (result) {
         const newChampionData = [...championData];
         const randomChampion = shuffle(newChampionData);
-        setChampion(randomChampion, $pickImages, $pickNames);
+        setChampion(randomChampion, $pickImages, $pickNames, version);
     }
 }
 
@@ -62,7 +62,7 @@ async function main() {
     const $backgound = document.querySelector('.backgound');
     $backgound.style.backgroundImage = `url('./src/img/T1.png')`;
     $backgound.style.backgroundRepeat = 'no-repeat';
-    $backgound.style.backgroundSize = 'contain';
+    $backgound.style.backgroundSize = 'cover';
 
     let championData = [];
 
@@ -73,8 +73,9 @@ async function main() {
 
     const $reBtn = document.querySelector('.reBtn');
     const isFirst = { bool: 1 };
+
     $reBtn.addEventListener('click', () =>
-        clickBtn(championData, $pickImages, $pickNames, isFirst)
+        clickBtn(championData, $pickImages, $pickNames, $version.innerText, isFirst)
     );
     for (let i = 0; i < 20; i++) {
         $pickImages.push(document.querySelector(`.pick${i + 1}-img`));
